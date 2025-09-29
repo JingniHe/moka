@@ -41,23 +41,22 @@ cd moka
 
 ### 4. Configure the pipeline parameters in the `config.yaml` file
 This configuration controls paths to inputs and analysis settings:
-- ***genotype_prefix:*** Prefix for genotype data files, 
-- ***weights_type:*** Text string for type of bridge weights to be used e.g. "eqtl", "imaging" JH: ??? What are the options??? 
+- ***genotype_prefix:*** Prefix for genotype data files.
+- ***weights_type:*** User defined text string for type of bridge weights to be used.
 - ***genotype_file_path:*** Path to genotype data files.
 - ***weight_file:*** Path to weight files used for association tests.
 - ***disgenet_reference_file:*** External disease database specific gene-disease associations from https://disgenet.org [For gene disease associations only!]
-- ***spectral decomposition:*** Flag for performation decomposition and transformation of genotype and phenotype, default: TRUE
+- ***spectral decomposition:*** Flag for performing eigenvalue decomposition of genomic relationship matrix (GRM) for spectral transformation of genotype and phenotype, default: FALSE.
 - ***is_binary:*** Flag for binary/ quantitative trait, default: TRUE 
 - ***Plink:*** Path to plink installation e.g. "~/software/plink"
 
-### 5. Running MOKA using the demo example
+### 5. Running MOKA
 We provide a demo example with configuration located at ./config/config.yaml. The pipeline executes the following steps:
 
 **Step 1. Kernel-based association testing**    
   - Integrates GWAS genotype data with the provided weights.
-  - For the weight file, supports diverse data sources derived SNP-level weights. JH: In our example, we used evolutionary conservation metrics as an example????
+  - For the weight file, supports diverse data sources derived SNP-level weights. In our example, we used evolutionary conservation scores.
   - Performs SNP-set kernel-based association tests to model the **joint effect of multiple variants**.
-  - Execute one chromosome at a time.
   - Optionally applies **decorrelation** to account for population structure or relatedness.
   
 ***Note:*** The initial run would take some time as the software installs the core dependencies requires from workflow/envs/moka.yaml. 
@@ -67,10 +66,10 @@ We provide a demo example with configuration located at ./config/config.yaml. Th
 **Output:** Results of association tests under ./result_folder/
   
 ```bash
-snakemake --cores 1 --use-conda
+snakemake --cores [num of cpu cores] --use-conda
 ```
 
-**Step 2. Merge_results from all chromosomes to a single file**  
+**Step 2. Merge results from all chromosomes into a single file**  
 **Input:** Individual association test results.
 
 **Output:** Merged association test results under ./result_folder/
